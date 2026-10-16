@@ -19,7 +19,7 @@ namespace LibraryManagementSystem.Models
         public Nullable<System.DateTime> ReturnDate { get; set; }
         public Nullable<decimal> FineAmount { get; set; }
     
-        public virtual Book Book { get; set; }
         public virtual Loan Loan { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

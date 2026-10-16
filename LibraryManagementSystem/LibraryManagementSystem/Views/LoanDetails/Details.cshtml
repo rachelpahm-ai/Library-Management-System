@@ -1,0 +1,58 @@
+﻿@model LibraryManagementSystem.Models.LoanDetail
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>LoanDetail</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ReturnDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FineAmount)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FineAmount)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Loan.Status)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Loan.Status)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Book.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Book.Title)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

@@ -17,7 +17,7 @@ namespace LibraryManagementSystem.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            var book = db.Book.Include(b => b.Category);
+            var book = db.Book.Include(b => b.Author).Include(b => b.Category);
             return View(book.ToList());
         }
 
@@ -39,6 +39,7 @@ namespace LibraryManagementSystem.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
+            ViewBag.AuthorID = new SelectList(db.Author, "AuthorID", "AuthorName");
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName");
             return View();
         }
@@ -48,7 +49,7 @@ namespace LibraryManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BookID,Title,Author,TotalQuantity,AvailableQuantity,CategoryID")] Book book)
+        public ActionResult Create([Bind(Include = "BookID,Title,AuthorID,CategoryID,TotalQuantity,AvailableQuantity")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -57,6 +58,7 @@ namespace LibraryManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.AuthorID = new SelectList(db.Author, "AuthorID", "AuthorName", book.AuthorID);
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName", book.CategoryID);
             return View(book);
         }
@@ -73,6 +75,7 @@ namespace LibraryManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.AuthorID = new SelectList(db.Author, "AuthorID", "AuthorName", book.AuthorID);
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName", book.CategoryID);
             return View(book);
         }
@@ -82,7 +85,7 @@ namespace LibraryManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BookID,Title,Author,TotalQuantity,AvailableQuantity,CategoryID")] Book book)
+        public ActionResult Edit([Bind(Include = "BookID,Title,AuthorID,CategoryID,TotalQuantity,AvailableQuantity")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -90,6 +93,7 @@ namespace LibraryManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.AuthorID = new SelectList(db.Author, "AuthorID", "AuthorName", book.AuthorID);
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName", book.CategoryID);
             return View(book);
         }

@@ -4,10 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Quản lý sách</h2>
+<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Thêm sách mới", "Create", null, new {@class ="btn btn-primary"})
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
@@ -15,13 +15,13 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.TotalQuantity)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AvailableQuantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author.AuthorName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Category.CategoryName)
@@ -35,21 +35,21 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Author)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.TotalQuantity)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AvailableQuantity)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Author.AuthorName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Category.CategoryName)
         </td>
         <td>
-            @Html.ActionLink("Sửa", "Edit", new { id=item.BookID }) |
-            @Html.ActionLink("Chi tiết", "Details", new { id=item.BookID }) |
-            @Html.ActionLink("Xóa", "Delete", new { id=item.BookID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.BookID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BookID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.BookID })
         </td>
     </tr>
 }

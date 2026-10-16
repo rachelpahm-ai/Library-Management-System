@@ -18,14 +18,19 @@ namespace LibraryManagementSystem.Models
         public Member()
         {
             this.Loan = new HashSet<Loan>();
+            this.Reservation = new HashSet<Reservation>();
         }
     
         public int MemberID { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public Nullable<int> AccountID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Loan> Loan { get; set; }
+        public virtual Account Account { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reservation> Reservation { get; set; }
     }
 }

@@ -5,15 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7d8299d99837417aa49c77e283fc6f32" Name="Diagram1" ZoomLevel="71">
-        <EntityTypeShape EntityType="DBLibraryManagementModel.Book" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="DBLibraryManagementModel.Category" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DBLibraryManagementModel.Loan" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBLibraryManagementModel.LoanDetail" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBLibraryManagementModel.Member" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <AssociationConnector Association="DBLibraryManagementModel.FK__Book__CategoryID__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="DBLibraryManagementModel.FK__LoanDetai__BookI__45F365D3" ManuallyRouted="false" />
         <AssociationConnector Association="DBLibraryManagementModel.FK__Loan__MemberID__403A8C7D" ManuallyRouted="false" />
         <AssociationConnector Association="DBLibraryManagementModel.FK__LoanDetai__LoanI__44FF419A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Account" Width="1.5" PointX="0.75" PointY="9.5" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Author" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Reservation" Width="1.5" PointX="5.25" PointY="4.25" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Member__AccountI__440B1D61" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Reservati__Membe__46E78A0C" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Book" Width="1.5" PointX="3" PointY="8.375" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Book__AuthorID__3E52440B" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Book__CategoryID__3F466844" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__LoanDetai__BookI__52593CB8" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Reservati__BookI__47DBAE45" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

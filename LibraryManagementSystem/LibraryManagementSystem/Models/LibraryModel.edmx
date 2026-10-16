@@ -4,17 +4,33 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBLibraryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DBLibraryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorID" />
+          </Key>
+          <Property Name="AuthorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Book">
           <Key>
             <PropertyRef Name="BookID" />
           </Key>
           <Property Name="BookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="Author" Type="nvarchar" MaxLength="100" />
+          <Property Name="AuthorID" Type="int" />
+          <Property Name="CategoryID" Type="int" />
           <Property Name="TotalQuantity" Type="int" />
           <Property Name="AvailableQuantity" Type="int" />
-          <Property Name="CategoryID" Type="int" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -51,8 +67,31 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Phone" Type="varchar" MaxLength="15" />
+          <Property Name="AccountID" Type="int" />
         </EntityType>
-        <Association Name="FK__Book__CategoryID__3B75D760">
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ReserveID" />
+          </Key>
+          <Property Name="ReserveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MemberID" Type="int" />
+          <Property Name="BookID" Type="int" />
+          <Property Name="ReserveDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Book__AuthorID__3E52440B">
+          <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Book__CategoryID__3F466844">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Book" Type="Self.Book" Multiplicity="*" />
           <ReferentialConstraint>
@@ -64,7 +103,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Loan__MemberID__403A8C7D">
+        <Association Name="FK__Loan__MemberID__4CA06362">
           <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
           <End Role="Loan" Type="Self.Loan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -76,7 +115,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__LoanDetai__BookI__45F365D3">
+        <Association Name="FK__LoanDetai__BookI__52593CB8">
           <End Role="Book" Type="Self.Book" Multiplicity="1" />
           <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -88,7 +127,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__LoanDetai__LoanI__44FF419A">
+        <Association Name="FK__LoanDetai__LoanI__5165187F">
           <End Role="Loan" Type="Self.Loan" Multiplicity="1" />
           <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -100,54 +139,95 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Member__AccountI__440B1D61">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reservati__BookI__47DBAE45">
+          <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reservati__Membe__46E78A0C">
+          <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DBLibraryManagementModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Loan" EntityType="Self.Loan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoanDetail" EntityType="Self.LoanDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Book__CategoryID__3B75D760" Association="Self.FK__Book__CategoryID__3B75D760">
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Book__AuthorID__3E52440B" Association="Self.FK__Book__AuthorID__3E52440B">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Book__CategoryID__3F466844" Association="Self.FK__Book__CategoryID__3F466844">
             <End Role="Category" EntitySet="Category" />
             <End Role="Book" EntitySet="Book" />
           </AssociationSet>
-          <AssociationSet Name="FK__Loan__MemberID__403A8C7D" Association="Self.FK__Loan__MemberID__403A8C7D">
+          <AssociationSet Name="FK__Loan__MemberID__4CA06362" Association="Self.FK__Loan__MemberID__4CA06362">
             <End Role="Member" EntitySet="Member" />
             <End Role="Loan" EntitySet="Loan" />
           </AssociationSet>
-          <AssociationSet Name="FK__LoanDetai__BookI__45F365D3" Association="Self.FK__LoanDetai__BookI__45F365D3">
+          <AssociationSet Name="FK__LoanDetai__BookI__52593CB8" Association="Self.FK__LoanDetai__BookI__52593CB8">
             <End Role="Book" EntitySet="Book" />
             <End Role="LoanDetail" EntitySet="LoanDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__LoanDetai__LoanI__44FF419A" Association="Self.FK__LoanDetai__LoanI__44FF419A">
+          <AssociationSet Name="FK__LoanDetai__LoanI__5165187F" Association="Self.FK__LoanDetai__LoanI__5165187F">
             <End Role="Loan" EntitySet="Loan" />
             <End Role="LoanDetail" EntitySet="LoanDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK__Member__AccountI__440B1D61" Association="Self.FK__Member__AccountI__440B1D61">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reservati__BookI__47DBAE45" Association="Self.FK__Reservati__BookI__47DBAE45">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reservati__Membe__46E78A0C" Association="Self.FK__Reservati__Membe__46E78A0C">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBLibraryManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Book">
-          <Key>
-            <PropertyRef Name="BookID" />
-          </Key>
-          <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Author" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="TotalQuantity" Type="Int32" />
-          <Property Name="AvailableQuantity" Type="Int32" />
-          <Property Name="CategoryID" Type="Int32" />
-          <NavigationProperty Name="Category" Relationship="Self.FK__Book__CategoryID__3B75D760" FromRole="Book" ToRole="Category" />
-          <NavigationProperty Name="LoanDetail" Relationship="Self.FK__LoanDetai__BookI__45F365D3" FromRole="Book" ToRole="LoanDetail" />
-        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryID" />
           </Key>
           <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Book" Relationship="Self.FK__Book__CategoryID__3B75D760" FromRole="Category" ToRole="Book" />
+          <NavigationProperty Name="Book" Relationship="DBLibraryManagementModel.FK__Book__CategoryID__3F466844" FromRole="Category" ToRole="Book" />
         </EntityType>
         <EntityType Name="Loan">
           <Key>
@@ -170,8 +250,8 @@
           <Property Name="BookID" Type="Int32" Nullable="false" />
           <Property Name="ReturnDate" Type="DateTime" Precision="3" />
           <Property Name="FineAmount" Type="Decimal" Precision="18" Scale="2" />
-          <NavigationProperty Name="Book" Relationship="Self.FK__LoanDetai__BookI__45F365D3" FromRole="LoanDetail" ToRole="Book" />
           <NavigationProperty Name="Loan" Relationship="Self.FK__LoanDetai__LoanI__44FF419A" FromRole="LoanDetail" ToRole="Loan" />
+          <NavigationProperty Name="Book" Relationship="DBLibraryManagementModel.FK__LoanDetai__BookI__52593CB8" FromRole="LoanDetail" ToRole="Book" />
         </EntityType>
         <EntityType Name="Member">
           <Key>
@@ -182,31 +262,10 @@
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Loan" Relationship="Self.FK__Loan__MemberID__403A8C7D" FromRole="Member" ToRole="Loan" />
+          <Property Name="AccountID" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="DBLibraryManagementModel.FK__Member__AccountI__440B1D61" FromRole="Member" ToRole="Account" />
+          <NavigationProperty Name="Reservation" Relationship="DBLibraryManagementModel.FK__Reservati__Membe__46E78A0C" FromRole="Member" ToRole="Reservation" />
         </EntityType>
-        <Association Name="FK__Book__CategoryID__3B75D760">
-          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
-          <End Role="Book" Type="Self.Book" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="CategoryID" />
-            </Principal>
-            <Dependent Role="Book">
-              <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__LoanDetai__BookI__45F365D3">
-          <End Role="Book" Type="Self.Book" Multiplicity="1" />
-          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Book">
-              <PropertyRef Name="BookID" />
-            </Principal>
-            <Dependent Role="LoanDetail">
-              <PropertyRef Name="BookID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Loan__MemberID__403A8C7D">
           <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
           <End Role="Loan" Type="Self.Loan" Multiplicity="*" />
@@ -232,19 +291,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DBLibraryManagementEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Book" EntityType="Self.Book" />
           <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="Loan" EntityType="Self.Loan" />
           <EntitySet Name="LoanDetail" EntityType="Self.LoanDetail" />
           <EntitySet Name="Member" EntityType="Self.Member" />
-          <AssociationSet Name="FK__Book__CategoryID__3B75D760" Association="Self.FK__Book__CategoryID__3B75D760">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Book" EntitySet="Book" />
-          </AssociationSet>
-          <AssociationSet Name="FK__LoanDetai__BookI__45F365D3" Association="Self.FK__LoanDetai__BookI__45F365D3">
-            <End Role="Book" EntitySet="Book" />
-            <End Role="LoanDetail" EntitySet="LoanDetail" />
-          </AssociationSet>
           <AssociationSet Name="FK__Loan__MemberID__403A8C7D" Association="Self.FK__Loan__MemberID__403A8C7D">
             <End Role="Member" EntitySet="Member" />
             <End Role="Loan" EntitySet="Loan" />
@@ -253,25 +303,158 @@
             <End Role="Loan" EntitySet="Loan" />
             <End Role="LoanDetail" EntitySet="LoanDetail" />
           </AssociationSet>
+          <EntitySet Name="Account" EntityType="DBLibraryManagementModel.Account" />
+          <EntitySet Name="Author" EntityType="DBLibraryManagementModel.Author" />
+          <EntitySet Name="Reservation" EntityType="DBLibraryManagementModel.Reservation" />
+          <AssociationSet Name="FK__Member__AccountI__440B1D61" Association="DBLibraryManagementModel.FK__Member__AccountI__440B1D61">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reservati__Membe__46E78A0C" Association="DBLibraryManagementModel.FK__Reservati__Membe__46E78A0C">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <EntitySet Name="Book" EntityType="DBLibraryManagementModel.Book" />
+          <AssociationSet Name="FK__Book__AuthorID__3E52440B" Association="DBLibraryManagementModel.FK__Book__AuthorID__3E52440B">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Book__CategoryID__3F466844" Association="DBLibraryManagementModel.FK__Book__CategoryID__3F466844">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LoanDetai__BookI__52593CB8" Association="DBLibraryManagementModel.FK__LoanDetai__BookI__52593CB8">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="LoanDetail" EntitySet="LoanDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reservati__BookI__47DBAE45" Association="DBLibraryManagementModel.FK__Reservati__BookI__47DBAE45">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Member" Relationship="DBLibraryManagementModel.FK__Member__AccountI__440B1D61" FromRole="Account" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorID" />
+          </Key>
+          <Property Name="AuthorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="DBLibraryManagementModel.FK__Book__AuthorID__3E52440B" FromRole="Author" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ReserveID" />
+          </Key>
+          <Property Name="ReserveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberID" Type="Int32" />
+          <Property Name="BookID" Type="Int32" />
+          <Property Name="ReserveDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Member" Relationship="DBLibraryManagementModel.FK__Reservati__Membe__46E78A0C" FromRole="Reservation" ToRole="Member" />
+          <NavigationProperty Name="Book" Relationship="DBLibraryManagementModel.FK__Reservati__BookI__47DBAE45" FromRole="Reservation" ToRole="Book" />
+        </EntityType>
+        <Association Name="FK__Member__AccountI__440B1D61">
+          <End Type="DBLibraryManagementModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="DBLibraryManagementModel.Member" Role="Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reservati__Membe__46E78A0C">
+          <End Type="DBLibraryManagementModel.Member" Role="Member" Multiplicity="0..1" />
+          <End Type="DBLibraryManagementModel.Reservation" Role="Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorID" Type="Int32" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="TotalQuantity" Type="Int32" />
+          <Property Name="AvailableQuantity" Type="Int32" />
+          <NavigationProperty Name="Author" Relationship="DBLibraryManagementModel.FK__Book__AuthorID__3E52440B" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="Category" Relationship="DBLibraryManagementModel.FK__Book__CategoryID__3F466844" FromRole="Book" ToRole="Category" />
+          <NavigationProperty Name="LoanDetail" Relationship="DBLibraryManagementModel.FK__LoanDetai__BookI__52593CB8" FromRole="Book" ToRole="LoanDetail" />
+          <NavigationProperty Name="Reservation" Relationship="DBLibraryManagementModel.FK__Reservati__BookI__47DBAE45" FromRole="Book" ToRole="Reservation" />
+        </EntityType>
+        <Association Name="FK__Book__AuthorID__3E52440B">
+          <End Type="DBLibraryManagementModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="DBLibraryManagementModel.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Book__CategoryID__3F466844">
+          <End Type="DBLibraryManagementModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="DBLibraryManagementModel.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LoanDetai__BookI__52593CB8">
+          <End Type="DBLibraryManagementModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="DBLibraryManagementModel.LoanDetail" Role="LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reservati__BookI__47DBAE45">
+          <End Type="DBLibraryManagementModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="DBLibraryManagementModel.Reservation" Role="Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DBLibraryManagementModelStoreContainer" CdmEntityContainer="DBLibraryManagementEntities">
-          <EntitySetMapping Name="Book">
-            <EntityTypeMapping TypeName="DBLibraryManagementModel.Book">
-              <MappingFragment StoreEntitySet="Book">
-                <ScalarProperty Name="BookID" ColumnName="BookID" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Author" ColumnName="Author" />
-                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
-                <ScalarProperty Name="AvailableQuantity" ColumnName="AvailableQuantity" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Category">
             <EntityTypeMapping TypeName="DBLibraryManagementModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -304,10 +487,52 @@
           <EntitySetMapping Name="Member">
             <EntityTypeMapping TypeName="DBLibraryManagementModel.Member">
               <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
                 <ScalarProperty Name="MemberID" ColumnName="MemberID" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+                <ScalarProperty Name="AuthorID" ColumnName="AuthorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservation">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ReserveDate" ColumnName="ReserveDate" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="ReserveID" ColumnName="ReserveID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Book">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="AvailableQuantity" ColumnName="AvailableQuantity" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="AuthorID" ColumnName="AuthorID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
