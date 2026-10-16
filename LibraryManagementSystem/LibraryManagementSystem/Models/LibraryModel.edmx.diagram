@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7d8299d99837417aa49c77e283fc6f32" Name="Diagram1">
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Book" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Category" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Loan" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.LoanDetail" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBLibraryManagementModel.Member" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Book__CategoryID__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__LoanDetai__BookI__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__Loan__MemberID__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="DBLibraryManagementModel.FK__LoanDetai__LoanI__44FF419A" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

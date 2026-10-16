@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBLibraryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="100" />
+          <Property Name="TotalQuantity" Type="int" />
+          <Property Name="AvailableQuantity" Type="int" />
+          <Property Name="CategoryID" Type="int" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Loan">
+          <Key>
+            <PropertyRef Name="LoanID" />
+          </Key>
+          <Property Name="LoanID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MemberID" Type="int" />
+          <Property Name="LoanDate" Type="datetime" />
+          <Property Name="DueDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LoanDetail">
+          <Key>
+            <PropertyRef Name="LoanID" />
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="LoanID" Type="int" Nullable="false" />
+          <Property Name="BookID" Type="int" Nullable="false" />
+          <Property Name="ReturnDate" Type="datetime" />
+          <Property Name="FineAmount" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Phone" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <Association Name="FK__Book__CategoryID__3B75D760">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Loan__MemberID__403A8C7D">
+          <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="Loan" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="Loan">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LoanDetai__BookI__45F365D3">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LoanDetai__LoanI__44FF419A">
+          <End Role="Loan" Type="Self.Loan" Multiplicity="1" />
+          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Loan">
+              <PropertyRef Name="LoanID" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="LoanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBLibraryManagementModelStoreContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Loan" EntityType="Self.Loan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoanDetail" EntityType="Self.LoanDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Book__CategoryID__3B75D760" Association="Self.FK__Book__CategoryID__3B75D760">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Loan__MemberID__403A8C7D" Association="Self.FK__Loan__MemberID__403A8C7D">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Loan" EntitySet="Loan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LoanDetai__BookI__45F365D3" Association="Self.FK__LoanDetai__BookI__45F365D3">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="LoanDetail" EntitySet="LoanDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LoanDetai__LoanI__44FF419A" Association="Self.FK__LoanDetai__LoanI__44FF419A">
+            <End Role="Loan" EntitySet="Loan" />
+            <End Role="LoanDetail" EntitySet="LoanDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBLibraryManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Author" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TotalQuantity" Type="Int32" />
+          <Property Name="AvailableQuantity" Type="Int32" />
+          <Property Name="CategoryID" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Book__CategoryID__3B75D760" FromRole="Book" ToRole="Category" />
+          <NavigationProperty Name="LoanDetail" Relationship="Self.FK__LoanDetai__BookI__45F365D3" FromRole="Book" ToRole="LoanDetail" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__Book__CategoryID__3B75D760" FromRole="Category" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Loan">
+          <Key>
+            <PropertyRef Name="LoanID" />
+          </Key>
+          <Property Name="LoanID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberID" Type="Int32" />
+          <Property Name="LoanDate" Type="DateTime" Precision="3" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Member" Relationship="Self.FK__Loan__MemberID__403A8C7D" FromRole="Loan" ToRole="Member" />
+          <NavigationProperty Name="LoanDetail" Relationship="Self.FK__LoanDetai__LoanI__44FF419A" FromRole="Loan" ToRole="LoanDetail" />
+        </EntityType>
+        <EntityType Name="LoanDetail">
+          <Key>
+            <PropertyRef Name="LoanID" />
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="LoanID" Type="Int32" Nullable="false" />
+          <Property Name="BookID" Type="Int32" Nullable="false" />
+          <Property Name="ReturnDate" Type="DateTime" Precision="3" />
+          <Property Name="FineAmount" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__LoanDetai__BookI__45F365D3" FromRole="LoanDetail" ToRole="Book" />
+          <NavigationProperty Name="Loan" Relationship="Self.FK__LoanDetai__LoanI__44FF419A" FromRole="LoanDetail" ToRole="Loan" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Loan" Relationship="Self.FK__Loan__MemberID__403A8C7D" FromRole="Member" ToRole="Loan" />
+        </EntityType>
+        <Association Name="FK__Book__CategoryID__3B75D760">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LoanDetai__BookI__45F365D3">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Loan__MemberID__403A8C7D">
+          <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="Loan" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="Loan">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LoanDetai__LoanI__44FF419A">
+          <End Role="Loan" Type="Self.Loan" Multiplicity="1" />
+          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Loan">
+              <PropertyRef Name="LoanID" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="LoanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBLibraryManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Book" EntityType="Self.Book" />
+          <EntitySet Name="Category" EntityType="Self.Category" />
+          <EntitySet Name="Loan" EntityType="Self.Loan" />
+          <EntitySet Name="LoanDetail" EntityType="Self.LoanDetail" />
+          <EntitySet Name="Member" EntityType="Self.Member" />
+          <AssociationSet Name="FK__Book__CategoryID__3B75D760" Association="Self.FK__Book__CategoryID__3B75D760">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LoanDetai__BookI__45F365D3" Association="Self.FK__LoanDetai__BookI__45F365D3">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="LoanDetail" EntitySet="LoanDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Loan__MemberID__403A8C7D" Association="Self.FK__Loan__MemberID__403A8C7D">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Loan" EntitySet="Loan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LoanDetai__LoanI__44FF419A" Association="Self.FK__LoanDetai__LoanI__44FF419A">
+            <End Role="Loan" EntitySet="Loan" />
+            <End Role="LoanDetail" EntitySet="LoanDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBLibraryManagementModelStoreContainer" CdmEntityContainer="DBLibraryManagementEntities">
+          <EntitySetMapping Name="Book">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="AvailableQuantity" ColumnName="AvailableQuantity" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Loan">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Loan">
+              <MappingFragment StoreEntitySet="Loan">
+                <ScalarProperty Name="LoanID" ColumnName="LoanID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="LoanDate" ColumnName="LoanDate" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanDetail">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.LoanDetail">
+              <MappingFragment StoreEntitySet="LoanDetail">
+                <ScalarProperty Name="LoanID" ColumnName="LoanID" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="FineAmount" ColumnName="FineAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Member">
+            <EntityTypeMapping TypeName="DBLibraryManagementModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
