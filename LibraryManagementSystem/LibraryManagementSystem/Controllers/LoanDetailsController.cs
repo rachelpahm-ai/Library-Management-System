@@ -53,13 +53,30 @@ namespace LibraryManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                // 1. Dùng LINQ tìm cuốn sách độc giả muốn mượn trong kho (Bỏ chữ 's' ở db.Book)
+                var book = db.Book.Find(loanDetail.BookID);
+
+                // 2. NGHIỆP VỤ BẮT BUỘC: Kiểm tra số lượng
+                if (book.AvailableQuantity <= 0)
+                {
+                    // Báo lỗi đỏ chót trên màn hình, chặn không cho lưu
+                    ModelState.AddModelError("", "Lỗi nghiệp vụ: Cuốn sách này đã hết trong kho, không thể cho mượn!");
+                    ViewBag.BookID = new SelectList(db.Book, "BookID", "Title", loanDetail.BookID);
+                    ViewBag.LoanID = new SelectList(db.Loan, "LoanID", "Status", loanDetail.LoanID);
+                    return View(loanDetail);
+                }
+
+                // 3. Nếu sách còn -> Cho mượn và TỰ ĐỘNG TRỪ số lượng đi 1
+                book.AvailableQuantity -= 1;
+
+                // 4. Lưu phiếu mượn và cập nhật lại kho sách
                 db.LoanDetail.Add(loanDetail);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.LoanID = new SelectList(db.Loan, "LoanID", "Status", loanDetail.LoanID);
             ViewBag.BookID = new SelectList(db.Book, "BookID", "Title", loanDetail.BookID);
+            ViewBag.LoanID = new SelectList(db.Loan, "LoanID", "Status", loanDetail.LoanID);
             return View(loanDetail);
         }
 
