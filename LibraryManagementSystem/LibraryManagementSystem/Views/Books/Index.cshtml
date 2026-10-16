@@ -4,10 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Quản lý sách</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Thêm sách mới", "Create", null, new {@class ="btn btn-primary"})
 </p>
 <table class="table">
     <tr>
@@ -47,9 +47,9 @@
             @Html.DisplayFor(modelItem => item.Category.CategoryName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BookID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BookID })
+            @Html.ActionLink("Sửa", "Edit", new { id=item.BookID }) |
+            @Html.ActionLink("Chi tiết", "Details", new { id=item.BookID }) |
+            @Html.ActionLink("Xóa", "Delete", new { id=item.BookID })
         </td>
     </tr>
 }
