@@ -123,5 +123,40 @@ namespace LibraryManagementSystem.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // Mở form Đăng nhập
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        // Xử lý kiểm tra lúc bấm nút Đăng nhập
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+            // Tìm trong DB xem có thằng nào khớp Username & Password không
+            var account = db.Account.SingleOrDefault(a => a.Username == username && a.Password == password);
+
+            if (account != null)
+            {
+                // Lưu thông tin thẻ xe vô Session
+                Session["AccountID"] = account.AccountID;
+                Session["Username"] = account.Username;
+                Session["Role"] = account.Role; // Cột Role này gán 'Admin' hoặc 'User'
+
+                return RedirectToAction("Index", "Books"); // Đăng nhập xong đá qua trang Sách
+            }
+
+            ViewBag.Error = "Tài khoản hoặc mật khẩu sai bét!";
+            return View();
+        }
+
+        // Đăng xuất (Xé thẻ xe)
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Login");
+        }
     }
 }

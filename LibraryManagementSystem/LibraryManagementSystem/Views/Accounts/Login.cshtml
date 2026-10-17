@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<h2>Đăng nhập hệ thống</h2>
+
+@if (ViewBag.Error != null)
+{
+    <p><b>CẢNH BÁO:</b> @ViewBag.Error</p>
+}
+
+<form action="/Accounts/Login" method="post">
+    <div>
+        <label>Tên đăng nhập:</label><br />
+        <input type="text" name="username" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Mật khẩu:</label><br />
+        <input type="password" name="password" required />
+    </div>
+
+    <br />
+
+    <button type="submit">Đăng nhập</button>
+</form>

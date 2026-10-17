@@ -290,6 +290,7 @@
     <Content Include="Views\LoanDetails\Details.cshtml" />
     <Content Include="Views\LoanDetails\Edit.cshtml" />
     <Content Include="Views\LoanDetails\Index.cshtml" />
+    <Content Include="Views\Accounts\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

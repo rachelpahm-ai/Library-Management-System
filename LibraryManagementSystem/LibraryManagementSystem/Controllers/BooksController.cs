@@ -39,9 +39,16 @@ namespace LibraryManagementSystem.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
+            // Nếu chưa đăng nhập HOẶC không phải là Admin -> Đuổi ra (trang Login)
+            if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             ViewBag.AuthorID = new SelectList(db.Author, "AuthorID", "AuthorName");
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName");
+
             return View();
+
         }
 
         // POST: Books/Create
@@ -51,12 +58,18 @@ namespace LibraryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "BookID,Title,AuthorID,CategoryID,TotalQuantity,AvailableQuantity")] Book book)
         {
+            // Nếu chưa đăng nhập HOẶC không phải là Admin -> Đuổi ra (trang Login)
+            if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             if (ModelState.IsValid)
             {
                 db.Book.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            
 
             ViewBag.AuthorID = new SelectList(db.Author, "AuthorID", "AuthorName", book.AuthorID);
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName", book.CategoryID);
@@ -66,6 +79,11 @@ namespace LibraryManagementSystem.Controllers
         // GET: Books/Edit/5
         public ActionResult Edit(int? id)
         {
+            // Nếu chưa đăng nhập HOẶC không phải là Admin -> Đuổi ra (trang Login)
+            if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -87,6 +105,11 @@ namespace LibraryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "BookID,Title,AuthorID,CategoryID,TotalQuantity,AvailableQuantity")] Book book)
         {
+            // Nếu chưa đăng nhập HOẶC không phải là Admin -> Đuổi ra (trang Login)
+            if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(book).State = EntityState.Modified;
@@ -101,6 +124,11 @@ namespace LibraryManagementSystem.Controllers
         // GET: Books/Delete/5
         public ActionResult Delete(int? id)
         {
+            // Nếu chưa đăng nhập HOẶC không phải là Admin -> Đuổi ra (trang Login)
+            if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -118,6 +146,11 @@ namespace LibraryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            // Nếu chưa đăng nhập HOẶC không phải là Admin -> Đuổi ra (trang Login)
+            if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             Book book = db.Book.Find(id);
             db.Book.Remove(book);
             db.SaveChanges();
