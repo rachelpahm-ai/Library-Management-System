@@ -149,5 +149,27 @@ namespace LibraryManagementSystem.Controllers
             }
             base.Dispose(disposing);
         }
+        // ==========================================
+        // BỔ SUNG CHO NHÁNH: feature-lichsu-thongke
+        // ==========================================
+
+        // 1. GET: LoanDetails/History (Lịch sử mượn/trả của độc giả)
+        public ActionResult History()
+        {
+            var loanDetails = db.LoanDetail.Include(l => l.Loan).Include(l => l.Book);
+            return View(loanDetails.ToList());
+        }
+
+        // 2. GET: LoanDetails/Dashboard (Dashboard thống kê cho Admin)
+        public ActionResult Dashboard()
+        {
+            // Thống kê tổng số sách đang cho mượn (ReturnDate chưa có/chưa trả)
+            ViewBag.TotalBooksBorrowed = db.LoanDetail.Count(ld => ld.ReturnDate == null);
+
+            // Thống kê tổng tiền phạt thu được
+            ViewBag.TotalFinesCollected = db.LoanDetail.Sum(ld => (decimal?)ld.FineAmount) ?? 0;
+
+            return View();
+        }
     }
 }

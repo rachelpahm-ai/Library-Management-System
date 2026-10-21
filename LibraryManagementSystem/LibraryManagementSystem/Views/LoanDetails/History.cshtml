@@ -1,0 +1,33 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.LoanDetail>
+
+@{
+    ViewBag.Title = "Lịch sử mượn trả";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Lịch sử mượn/trả sách của độc giả</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã phiếu</th>
+                <th>Tên sách</th>
+                <th>Ngày trả</th>
+                <th>Tiền phạt</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.LoanID</td>
+                    <td>@(item.Book != null ? item.Book.Title : "N/A")</td>
+                    <td>
+                        @(item.ReturnDate.HasValue ? item.ReturnDate.Value.ToString("dd/MM/yyyy") : "Chưa trả (Đang mượn)")
+                    </td>
+                    <td>@String.Format("{0:N0}", item.FineAmount) VNĐ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Dashboard Thống Kê";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Trang Thống Kê Quản Trị (Admin Dashboard)</h2>
+
+    <div class="row">
+        <!-- Thẻ thống kê số sách đang cho mượn -->
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng số sách đang cho mượn</h5>
+                    <p class="card-text display-4">@ViewBag.TotalBooksBorrowed</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thẻ thống kê tổng tiền phạt -->
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng tiền phạt thu được</h5>
+                    <p class="card-text display-4">@String.Format("{0:N0}", ViewBag.TotalFinesCollected) VNĐ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
